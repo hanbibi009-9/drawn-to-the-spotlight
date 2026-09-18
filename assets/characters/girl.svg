@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 900" width="260" height="900" role="img" aria-label="드레스를 입은 여성 실루엣 플레이스홀더">
+  <defs>
+    <linearGradient id="girlFill" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#E7C88A"/>
+      <stop offset="100%" stop-color="#C6A15B"/>
+    </linearGradient>
+  </defs>
+  <g fill="url(#girlFill)" opacity="0.95">
+    <!-- bun -->
+    <circle cx="130" cy="34" r="19"/>
+    <!-- head -->
+    <circle cx="130" cy="66" r="38"/>
+    <!-- neck -->
+    <rect x="118" y="98" width="24" height="22" rx="8"/>
+    <!-- bodice (V-neck) -->
+    <path d="M 72,124 L 130,168 L 188,124 L 172,222 Q130,240 88,222 Z"/>
+    <!-- bent arm holding clutch -->
+    <path d="M 186,126 C 214,142 224,176 214,206 C 210,218 194,220 186,212 C 196,196 198,168 176,146 Z"/>
+    <rect x="176" y="200" width="40" height="26" rx="6" transform="rotate(-18 196 213)"/>
+    <!-- straight arm -->
+    <path d="M 74,126 C 54,150 50,196 62,230 C 66,240 84,238 88,228 C 78,204 80,168 96,144 Z"/>
+    <!-- flared skirt -->
+    <path d="M 88,222 Q130,210 172,222 L 214,420 Q130,452 46,420 Z"/>
+    <!-- legs -->
+    <rect x="112" y="418" width="20" height="330" rx="10"/>
+    <rect x="134" y="418" width="20" height="336" rx="10"/>
+    <!-- heels -->
+    <path d="M 100,748 L 138,748 L 138,772 Q116,784 96,772 Z"/>
+    <path d="M 128,754 L 168,754 L 168,778 Q146,790 126,778 Z"/>
+    <rect x="132" y="770" width="4" height="26" rx="2"/>
+    <rect x="160" y="776" width="4" height="26" rx="2"/>
+  </g>
+</svg>

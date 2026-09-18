@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="팀원 프로필 임시 아바타">
+  <defs>
+    <radialGradient id="bg1" cx="50%" cy="38%" r="60%">
+      <stop offset="0%" stop-color="#2a2823"/>
+      <stop offset="100%" stop-color="#0B0B0D"/>
+    </radialGradient>
+    <linearGradient id="g1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#E7C88A"/>
+      <stop offset="100%" stop-color="#B98F4C"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" fill="url(#bg1)"/>
+  <g fill="url(#g1)">
+    <!-- short rounded hair -->
+    <path d="M64,70 Q100,36 136,70 L136,84 Q100,64 64,84 Z"/>
+    <circle cx="100" cy="92" r="34"/>
+    <path d="M46,200 C46,150 70,128 100,128 C130,128 154,150 154,200 Z"/>
+  </g>
+</svg>

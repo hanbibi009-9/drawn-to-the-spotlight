@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 2400" width="1600" height="2400" role="img" aria-label="올드 할리우드 프리미어 스타일의 극장 무대와 스포트라이트 장식 배경">
+  <defs>
+    <radialGradient id="spotlight" cx="50%" cy="28%" r="65%">
+      <stop offset="0%" stop-color="#3a2f16" stop-opacity="0.95"/>
+      <stop offset="35%" stop-color="#1c160b" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#0B0B0D" stop-opacity="1"/>
+    </radialGradient>
+    <linearGradient id="curtainL" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3d0707"/>
+      <stop offset="55%" stop-color="#650b0b"/>
+      <stop offset="100%" stop-color="#8B0000"/>
+    </linearGradient>
+    <linearGradient id="curtainR" x1="100%" y1="0%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#3d0707"/>
+      <stop offset="55%" stop-color="#650b0b"/>
+      <stop offset="100%" stop-color="#8B0000"/>
+    </linearGradient>
+    <linearGradient id="goldLine" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#C6A15B" stop-opacity="0.15"/>
+      <stop offset="50%" stop-color="#C6A15B" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#C6A15B" stop-opacity="0.15"/>
+    </linearGradient>
+    <radialGradient id="bulbGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#F4E9D8" stop-opacity="1"/>
+      <stop offset="60%" stop-color="#C6A15B" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#C6A15B" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="floor" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0B0B0D" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.9"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="1600" height="2400" fill="#0B0B0D"/>
+  <rect x="0" y="0" width="1600" height="2400" fill="url(#spotlight)"/>
+
+  <!-- spotlight cone -->
+  <polygon points="800,120 420,1500 1180,1500" fill="#F4E9D8" opacity="0.05"/>
+  <polygon points="800,120 560,1500 1040,1500" fill="#F4E9D8" opacity="0.06"/>
+
+  <!-- marquee arch -->
+  <g>
+    <path d="M 120 480 Q 800 40 1480 480" fill="none" stroke="url(#goldLine)" stroke-width="6"/>
+    <path d="M 170 520 Q 800 110 1430 520" fill="none" stroke="#C6A15B" stroke-width="2" opacity="0.5"/>
+    <!-- marquee bulbs -->
+    <g id="bulbs">
+      <circle cx="120" cy="480" r="16" fill="url(#bulbGlow)"/><circle cx="120" cy="480" r="5" fill="#F4E9D8"/>
+      <circle cx="256" cy="401" r="16" fill="url(#bulbGlow)"/><circle cx="256" cy="401" r="5" fill="#F4E9D8"/>
+      <circle cx="392" cy="339" r="16" fill="url(#bulbGlow)"/><circle cx="392" cy="339" r="5" fill="#F4E9D8"/>
+      <circle cx="528" cy="295" r="16" fill="url(#bulbGlow)"/><circle cx="528" cy="295" r="5" fill="#F4E9D8"/>
+      <circle cx="664" cy="269" r="16" fill="url(#bulbGlow)"/><circle cx="664" cy="269" r="5" fill="#F4E9D8"/>
+      <circle cx="800" cy="260" r="16" fill="url(#bulbGlow)"/><circle cx="800" cy="260" r="5" fill="#F4E9D8"/>
+      <circle cx="936" cy="269" r="16" fill="url(#bulbGlow)"/><circle cx="936" cy="269" r="5" fill="#F4E9D8"/>
+      <circle cx="1072" cy="295" r="16" fill="url(#bulbGlow)"/><circle cx="1072" cy="295" r="5" fill="#F4E9D8"/>
+      <circle cx="1208" cy="339" r="16" fill="url(#bulbGlow)"/><circle cx="1208" cy="339" r="5" fill="#F4E9D8"/>
+      <circle cx="1344" cy="401" r="16" fill="url(#bulbGlow)"/><circle cx="1344" cy="401" r="5" fill="#F4E9D8"/>
+      <circle cx="1480" cy="480" r="16" fill="url(#bulbGlow)"/><circle cx="1480" cy="480" r="5" fill="#F4E9D8"/>
+    </g>
+  </g>
+
+  <!-- side curtains, art deco pleats -->
+  <g opacity="0.92">
+    <rect x="0" y="0" width="230" height="2400" fill="url(#curtainL)"/>
+    <rect x="1370" y="0" width="230" height="2400" fill="url(#curtainR)"/>
+    <!-- pleat lines left -->
+    <g stroke="#000000" stroke-opacity="0.35" stroke-width="4">
+      <line x1="20" y1="0" x2="20" y2="2400"/>
+      <line x1="55" y1="0" x2="55" y2="2400"/>
+      <line x1="90" y1="0" x2="90" y2="2400"/>
+      <line x1="125" y1="0" x2="125" y2="2400"/>
+      <line x1="160" y1="0" x2="160" y2="2400"/>
+      <line x1="195" y1="0" x2="195" y2="2400"/>
+    </g>
+    <g stroke="#C6A15B" stroke-opacity="0.18" stroke-width="2">
+      <line x1="37" y1="0" x2="37" y2="2400"/>
+      <line x1="72" y1="0" x2="72" y2="2400"/>
+      <line x1="107" y1="0" x2="107" y2="2400"/>
+      <line x1="142" y1="0" x2="142" y2="2400"/>
+      <line x1="177" y1="0" x2="177" y2="2400"/>
+    </g>
+    <!-- pleat lines right -->
+    <g stroke="#000000" stroke-opacity="0.35" stroke-width="4">
+      <line x1="1580" y1="0" x2="1580" y2="2400"/>
+      <line x1="1545" y1="0" x2="1545" y2="2400"/>
+      <line x1="1510" y1="0" x2="1510" y2="2400"/>
+      <line x1="1475" y1="0" x2="1475" y2="2400"/>
+      <line x1="1440" y1="0" x2="1440" y2="2400"/>
+      <line x1="1405" y1="0" x2="1405" y2="2400"/>
+    </g>
+    <g stroke="#C6A15B" stroke-opacity="0.18" stroke-width="2">
+      <line x1="1563" y1="0" x2="1563" y2="2400"/>
+      <line x1="1528" y1="0" x2="1528" y2="2400"/>
+      <line x1="1493" y1="0" x2="1493" y2="2400"/>
+      <line x1="1458" y1="0" x2="1458" y2="2400"/>
+      <line x1="1423" y1="0" x2="1423" y2="2400"/>
+    </g>
+  </g>
+
+  <!-- art deco sunburst center -->
+  <g transform="translate(800,900)" opacity="0.16" stroke="#C6A15B" stroke-width="3" fill="none">
+    <line x1="0" y1="0" x2="0" y2="-650"/>
+    <line x1="0" y1="0" x2="180" y2="-620"/>
+    <line x1="0" y1="0" x2="-180" y2="-620"/>
+    <line x1="0" y1="0" x2="340" y2="-500"/>
+    <line x1="0" y1="0" x2="-340" y2="-500"/>
+    <line x1="0" y1="0" x2="470" y2="-320"/>
+    <line x1="0" y1="0" x2="-470" y2="-320"/>
+    <line x1="0" y1="0" x2="540" y2="-90"/>
+    <line x1="0" y1="0" x2="-540" y2="-90"/>
+  </g>
+
+  <!-- floor -->
+  <rect x="0" y="1700" width="1600" height="700" fill="url(#floor)"/>
+
+  <!-- decorative gold frame lines top/bottom -->
+  <rect x="60" y="60" width="1480" height="2280" fill="none" stroke="#C6A15B" stroke-width="2" opacity="0.35"/>
+  <rect x="80" y="80" width="1440" height="2240" fill="none" stroke="#C6A15B" stroke-width="1" opacity="0.2"/>
+</svg>
