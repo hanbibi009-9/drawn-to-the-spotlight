@@ -7,37 +7,39 @@
 <meta name="description" content="2026 애니메이션 & 웹툰 졸업상영회 온라인 상영회 — 올드 할리우드 프리미어 나이트">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Poiret+One&family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
 <a class="skip-link" href="#program">본문(상영 프로그램)으로 바로가기</a>
 
-<!-- ===== 3.1 오프닝 히어로 ===== -->
+<!-- ===== 3.1 오프닝 히어로 (등장 애니메이션이 끝나도 같은 DOM이 그대로 최종 화면이 됨) ===== -->
 <header class="hero" id="hero">
   <img class="hero__poster" src="assets/hero-poster.svg" alt="올드 할리우드 극장 무대 위 스포트라이트와 마퀴 조명이 드리운 상영회 홍보 포스터">
   <div class="hero__stars" aria-hidden="true"></div>
   <div class="hero__scrim" aria-hidden="true"></div>
-  <div class="hero__gallery" id="heroGallery" aria-hidden="true"><!-- JS 렌더: 스포트라이트 빔 속 액자 갤러리 --></div>
+  <div class="hero__spotlight" aria-hidden="true"></div>
+  <div class="hero__gallery" id="heroGallery" aria-hidden="true"><!-- JS 렌더: 스포트라이트 빔 속 액자 갤러리 11장 --></div>
   <div class="hero__content">
     <div class="hero__text-scrim" aria-hidden="true"></div>
     <p class="hero__edition" id="heroEdition"></p>
     <h1 class="hero__title" id="heroTitle"></h1>
+    <div class="hero__ornament" aria-hidden="true">
+      <span class="hero__ornament-line hero__ornament-line--left"></span>
+      <span class="hero__ornament-diamond"></span>
+      <span class="hero__ornament-line hero__ornament-line--right"></span>
+    </div>
     <p class="hero__subtitle" id="heroSubtitle"></p>
     <p class="hero__period" id="heroPeriod"></p>
-    <p class="hero__credit" id="heroCredit"></p>
+    <p class="hero__venue" id="heroVenue"></p>
   </div>
-  <div class="hero__curtain hero__curtain--left" id="curtainLeft" aria-hidden="true"></div>
-  <div class="hero__curtain hero__curtain--right" id="curtainRight" aria-hidden="true"></div>
   <div class="hero__frame" aria-hidden="true">
     <span class="hero__frame-corner hero__frame-corner--tl"></span>
     <span class="hero__frame-corner hero__frame-corner--tr"></span>
     <span class="hero__frame-corner hero__frame-corner--bl"></span>
     <span class="hero__frame-corner hero__frame-corner--br"></span>
-    <span class="hero__frame-diamond">
-      <span class="hero__frame-diamond-inner"></span>
-    </span>
+    <span class="hero__frame-diamond"></span>
   </div>
   <a class="hero__scroll" href="#toc" aria-label="상영 프로그램 목차로 스크롤">
     <span class="hero__scroll-line" aria-hidden="true"></span>

@@ -3,21 +3,29 @@
    ========================================================= */
 
 :root {
-  /* --- colors --- */
-  --c-bg: #15110D;
-  --c-bg-raised: #1B1611;
-  --c-ivory: #F4E9D8;
-  --c-gold: #C6A15B;
-  --c-gold-soft: rgba(198, 161, 91, 0.35);
-  --c-gold-light: #E8CDA0;
-  --c-gold-deep: #9C7A3C;
-  --g-gold: linear-gradient(180deg, var(--c-gold-light) 0%, var(--c-gold-deep) 100%);
+  /* --- colors: final poster palette — muted orange/bronze antique gold, never pure black + bright gold --- */
+  --c-bg-deep: #0B0D06;         /* 가장 어두운 암전 영역 */
+  --c-bg: #12150C;              /* 사이트 기본 배경 */
+  --c-bg-raised: #242921;       /* 카드 등 살짝 띄운 배경 (bg-theatre) */
+  --c-bg-raised-2: #41453D;     /* 보조/구조 배경 (bg-structure) */
+  --c-ivory: #D9A367;           /* 주요 작은 텍스트 (text-primary, 더 이상 ivory가 아닌 muted gold) */
+  --c-ivory-bright: #D9A367;
+  --c-gold: #CE8D49;            /* 메인 타이틀용 gold-primary */
+  --c-gold-bright: #D9A367;     /* gold-highlight */
+  --c-gold-light: #D9A367;      /* highlight gold */
+  --c-gold-lighter: #D9A367;    /* highlight gold 2 */
+  --c-gold-deep: #6B481F;       /* 그라데이션 하단/외곽선용 깊은 브론즈 (gold-dark) */
+  --c-gold-line: #B97832;       /* 별·장식, 얇은 외곽선 (gold-line) */
+  --c-gold-soft: rgba(185, 120, 50, 0.35);
+  --g-gold: linear-gradient(180deg, var(--c-gold-bright) 0%, var(--c-gold) 100%);
   --c-red: #8B0000;
-  --c-silver: #B8B8B8;
+  --c-silver: #C2A17A;          /* 보조 텍스트 (text-secondary) */
+  --c-spotlight: #C8B596;       /* 스포트라이트 빔 — 탁한 베이지 */
+  --c-spotlight-core: #E8DFC4;  /* 스포트라이트가 바닥에 닿는 부분만 */
 
   /* --- type --- */
-  --f-display: 'Cinzel', 'Noto Serif KR', serif;
-  --f-deco: 'Poiret One', 'Noto Serif KR', serif;
+  --f-display: 'Bodoni Moda', 'Cormorant Garamond', 'Noto Serif KR', serif;
+  --f-deco: 'Cormorant Garamond', 'Noto Serif KR', serif;
   --f-body: 'Noto Sans KR', sans-serif;
   --f-caption: 'Noto Serif KR', serif;
 
@@ -34,12 +42,36 @@ button, input, textarea, select {
 }
 
 body {
+  position: relative;
   margin: 0;
   background: var(--c-bg);
   color: var(--c-ivory);
   font-family: var(--f-body);
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
+}
+
+/* 오래된 인쇄물/필름 질감 — film grain, 가독성을 해치지 않을 만큼 아주 옅게 */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9600;
+  pointer-events: none;
+  background-image: url("../assets/grain.svg");
+  background-size: 180px 180px;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+}
+
+/* 화면 가장자리를 은은하게 어둡게 — vignette */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9601;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 45%, rgba(9, 11, 7, 0.55) 100%);
 }
 
 img { max-width: 100%; display: block; }
@@ -95,7 +127,7 @@ a { color: inherit; }
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(21,17,13,0.15) 0%, rgba(21,17,13,0.15) 40%, rgba(21,17,13,0.75) 78%, rgba(21,17,13,0.96) 100%);
+    linear-gradient(180deg, rgba(11,13,6,0.15) 0%, rgba(11,13,6,0.15) 40%, rgba(11,13,6,0.75) 78%, rgba(11,13,6,0.96) 100%);
 }
 
 /* --- 포스터처럼 은은하게 반짝이는 금색 별 입자 레이어 --- */
@@ -109,49 +141,97 @@ a { color: inherit; }
   mix-blend-mode: screen;
 }
 
-/* --- 스포트라이트 빔 속, 텍스트 바로 앞 레이어에 쌓이는 액자 갤러리 --- */
+/* --- 극장 상단에서 켜지는 스포트라이트. 애니메이션이 끝난 뒤에도 Hero의 실제 배경 요소로 계속 남음 --- */
+.hero__spotlight {
+  position: absolute;
+  left: 50%;
+  top: -6%;
+  width: 150%;
+  height: 118%;
+  transform: translateX(-50%);
+  /* 빔 자체는 탁한 베이지(--c-spotlight), 바닥에 닿는 하단부만 --c-spotlight-core에 가깝게 — 너무 밝지 않게 */
+  background: linear-gradient(180deg,
+    rgba(200, 181, 150, 0.2) 0%,
+    rgba(200, 181, 150, 0.13) 48%,
+    rgba(232, 223, 196, 0.22) 82%,
+    rgba(232, 223, 196, 0.06) 100%);
+  clip-path: polygon(48.5% 0%, 51.5% 0%, 85% 100%, 15% 100%);
+  opacity: 0;
+  filter: blur(3px);
+  pointer-events: none;
+}
+
+.hero--spotlight-on .hero__spotlight {
+  animation: heroSpotFlicker 1.2s ease-out forwards;
+}
+
+@keyframes heroSpotFlicker {
+  0%   { opacity: 0; }
+  10%  { opacity: 0.6; }
+  22%  { opacity: 0.3; }
+  45%  { opacity: 0.85; }
+  100% { opacity: 0.85; }
+}
+
+/* --- 스포트라이트 빔 속에 쌓이는 액자 갤러리(작품 11장). 흩어진 시작 위치 → 최종 위치로 "날아와 눌러앉는" 구조 --- */
 .hero__gallery {
   position: absolute;
   left: 50%;
-  top: 9%;
+  top: 8%;
+  width: clamp(150px, 24vw, 230px);
+  height: clamp(260px, 44vh, 440px);
   transform: translateX(-50%);
-  width: clamp(120px, 16vw, 190px);
   z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
   pointer-events: none;
-  animation: galleryIn 1.4s cubic-bezier(0.22, 0.8, 0.25, 1) both;
-  animation-delay: 0.5s;
-}
-
-@keyframes galleryIn {
-  from { opacity: 0; transform: translateX(-50%) translateY(26px); }
-  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
 .hero__gallery-frame {
-  position: relative;
-  width: 72%;
-  aspect-ratio: 4 / 3;
-  background: linear-gradient(160deg, #e9ddc6, #cfc1a0);
-  border: 1px solid rgba(0,0,0,0.25);
-  box-shadow: 0 10px 18px rgba(0,0,0,0.5);
-  padding: 5px;
+  position: absolute;
+  width: clamp(42px, 7vw, 66px);
+  aspect-ratio: 2 / 3;
+  z-index: var(--z, 1);
+  /* left/top은 각 액자의 "중심"이 놓일 지점 — translate(-50%,-50%)로 그 지점에 중심을 맞춘 뒤 날아오는 효과를 얹음 */
+  transform: translate3d(calc(-50% + var(--fx, 0px)), calc(-50% + var(--fy, 0px)), 0) rotate(var(--frot, 0deg)) scale(var(--fscale, 0.6));
+  opacity: 0;
+  transition:
+    transform var(--dur, 1.1s) cubic-bezier(0.16, 1, 0.3, 1) var(--delay, 0s),
+    opacity calc(var(--dur, 1.1s) * 0.7) ease-out var(--delay, 0s);
+  will-change: transform, opacity;
 }
 
-.hero__gallery-frame:nth-child(odd) { align-self: flex-start; transform: rotate(-3deg); }
-.hero__gallery-frame:nth-child(even) { align-self: flex-end; transform: rotate(3deg); }
-.hero__gallery-frame:not(:first-child) { margin-top: -35%; }
+.hero--posters-in .hero__gallery-frame {
+  transform: translate3d(-50%, -50%, 0) rotate(var(--rot, 0deg)) scale(var(--scale, 1));
+  opacity: 1;
+}
 
-.hero__gallery-frame img,
-.hero__gallery-frame .hero__gallery-placeholder {
+.hero__gallery-mat {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(160deg, #e3d2ad, #b08c55);
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.55);
+  padding: 4px;
+}
+
+.hero__gallery-mat img,
+.hero__gallery-placeholder {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  background: repeating-linear-gradient(135deg, #b9ac8c 0 2px, #d9cdae 2px 6px);
+  background: repeating-linear-gradient(135deg, #8a6f45 0 2px, #c2a17a 2px 6px);
+  filter: brightness(0.5) saturate(0.75);
+  transition: filter 1.1s ease;
+}
+
+.hero--revealed .hero__gallery-mat img,
+.hero--revealed .hero__gallery-placeholder { filter: brightness(1) saturate(1); }
+
+/* 마우스가 Hero를 벗어나면 패럴랙스 오프셋이 부드럽게 원위치로; 움직이는 동안은 지연 없이 바로 따라오도록 이때만 transition을 켬 */
+.hero--settling .hero__gallery,
+.hero--settling .hero__spotlight,
+.hero--settling .hero__stars {
+  transition: transform 0.6s ease;
 }
 
 .hero__content {
@@ -163,8 +243,8 @@ a { color: inherit; }
   padding: 0 24px 88px;
   text-align: center;
   will-change: transform, opacity;
-  animation: heroContentIn 1.1s cubic-bezier(0.22, 1, 0.36, 1) both;
-  animation-delay: 0.2s;
+  animation: heroContentIn 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: 2.8s;
 }
 
 @keyframes heroContentIn {
@@ -194,7 +274,7 @@ a { color: inherit; }
 .hero__title {
   font-family: var(--f-display);
   font-weight: 700;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.05em;
   font-size: clamp(1.2rem, 5.1vw, 3.6rem);
   line-height: 1.3;
   margin: 0 0 16px;
@@ -218,6 +298,40 @@ a { color: inherit; }
   vertical-align: baseline;
 }
 
+/* --- 타이틀 아래 금장식(라인+다이아몬드). 스포트라이트가 켜진 뒤 가운데서 양옆으로 그려지듯 등장, 이후 계속 남음 --- */
+.hero__ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 2px 0 18px;
+}
+
+.hero__ornament-line {
+  width: clamp(36px, 7vw, 72px);
+  height: 1px;
+  background: var(--g-gold);
+  transform: scaleX(0);
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hero__ornament-line--left { transform-origin: right center; }
+.hero__ornament-line--right { transform-origin: left center; }
+
+.hero--ornament-in .hero__ornament-line { transform: scaleX(1); }
+
+.hero__ornament-diamond {
+  width: 10px;
+  height: 10px;
+  background: var(--g-gold);
+  clip-path: polygon(50% 0%, 61% 38%, 100% 50%, 61% 62%, 50% 100%, 39% 62%, 0% 50%, 39% 38%);
+  filter: drop-shadow(0 0 3px var(--c-gold-lighter));
+  transform: scale(0);
+  transition: transform 0.5s ease 0.25s;
+}
+
+.hero--ornament-in .hero__ornament-diamond { transform: scale(1); }
+
 .hero__subtitle {
   font-family: var(--f-deco);
   font-size: clamp(1rem, 2.6vw, 1.4rem);
@@ -232,14 +346,15 @@ a { color: inherit; }
   font-weight: 700;
   font-size: 0.95rem;
   color: var(--c-silver);
-  margin: 0 0 6px;
+  margin: 0 0 8px;
+  white-space: nowrap;
 }
 
-.hero__credit {
-  font-family: var(--f-caption);
-  font-style: italic;
-  color: var(--c-gold);
-  font-size: 0.95rem;
+.hero__venue {
+  font-family: var(--f-body);
+  font-size: 0.76rem;
+  letter-spacing: 0.1em;
+  color: var(--c-silver);
   margin: 0;
 }
 
@@ -274,50 +389,6 @@ a { color: inherit; }
   50% { opacity: 1; transform: translateY(4px); }
 }
 
-/* --- 오프닝 커튼: 양옆으로 간단하게 열리기만 하는 버전 --- */
-.hero__curtain {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 51%;
-  z-index: 10;
-  background:
-    repeating-linear-gradient(90deg, rgba(0,0,0,0.32) 0 3px, transparent 3px 15px, rgba(255,255,255,0.03) 15px 17px, transparent 17px 30px),
-    linear-gradient(100deg, #3d0707 0%, #6b0d0d 40%, #8B0000 75%, #6b0d0d 100%);
-  box-shadow: inset 0 0 120px rgba(0, 0, 0, 0.65);
-  pointer-events: none;
-  transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.hero__curtain::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 54px;
-  background: linear-gradient(180deg, rgba(198, 161, 91, 0.55), rgba(198, 161, 91, 0) 100%);
-}
-
-.hero__curtain::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background: linear-gradient(180deg, rgba(198, 161, 91, 0.75), rgba(198, 161, 91, 0.15) 60%, transparent);
-}
-
-.hero__curtain--left { left: 0; transform: translateX(0); }
-.hero__curtain--left::after { right: 0; }
-.hero__curtain--right { right: 0; transform: translateX(0); }
-.hero__curtain--right::after { left: 0; }
-
-.hero__curtain--left.is-open { transform: translateX(-140%); }
-.hero__curtain--right.is-open { transform: translateX(140%); }
-
-/* 다 열린 뒤에는 완전히 숨겨서, 스크롤 중 가장자리 서브픽셀 깜빡임이 아예 안 생기게 함 */
-.hero__curtain.is-hidden { visibility: hidden; }
 
 /* --- 포스터처럼 화면 전체를 감싸는 아르데코 더블 라인 금색 테두리 --- */
 .hero__frame {
@@ -325,7 +396,7 @@ a { color: inherit; }
   inset: 16px;
   z-index: 20;
   pointer-events: none;
-  border: 1px solid var(--c-gold-light);
+  border: 1px solid var(--c-gold-line);
   opacity: 0.85;
 }
 
@@ -342,7 +413,7 @@ a { color: inherit; }
 .hero__frame-corner::after {
   content: "";
   position: absolute;
-  background: var(--c-gold-light);
+  background: var(--c-gold-line);
 }
 .hero__frame-corner::before { width: 100%; height: 2px; top: 0; }
 .hero__frame-corner::after { width: 2px; height: 100%; left: 0; }
@@ -359,19 +430,23 @@ a { color: inherit; }
 
 .hero__frame-diamond {
   position: absolute;
-  top: -11px;
+  top: -9px;
   left: 50%;
-  width: 20px;
-  height: 20px;
-  background: var(--c-bg);
-  border: 1px solid var(--c-gold-light);
-  transform: translateX(-50%) rotate(45deg);
+  width: 18px;
+  height: 18px;
+  transform: translateX(-50%);
+  background: var(--g-gold);
+  /* 뾰족한 4방향 반짝이(sparkle) 모양 — 끝이 날카로운 별 */
+  clip-path: polygon(50% 0%, 61% 38%, 100% 50%, 61% 62%, 50% 100%, 39% 62%, 0% 50%, 39% 38%);
+  filter:
+    drop-shadow(0 0 3px var(--c-gold-lighter))
+    drop-shadow(0 0 8px rgba(185, 120, 50, 0.65));
+  animation: frameSparkleTwinkle 3.2s ease-in-out infinite;
 }
 
-.hero__frame-diamond-inner {
-  position: absolute;
-  inset: 4px;
-  background: var(--g-gold);
+@keyframes frameSparkleTwinkle {
+  0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(0.85); }
+  50%      { opacity: 1;   transform: translateX(-50%) scale(1.15); }
 }
 
 /* =========================================================
@@ -379,7 +454,7 @@ a { color: inherit; }
    ========================================================= */
 .deco-rule {
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--c-gold) 20%, var(--c-gold) 80%, transparent);
+  background: linear-gradient(90deg, transparent, var(--c-gold-line) 20%, var(--c-gold-line) 80%, transparent);
   opacity: 0.6;
 }
 
@@ -391,7 +466,7 @@ a { color: inherit; }
   border-top: 1px solid var(--c-gold-soft);
   text-align: center;
   background:
-    radial-gradient(ellipse at top, rgba(198, 161, 91, 0.05), transparent 60%),
+    radial-gradient(ellipse at top, rgba(206, 141, 73, 0.05), transparent 60%),
     var(--c-bg);
 }
 
@@ -469,7 +544,7 @@ a { color: inherit; }
   border-top: 1px solid var(--c-gold-soft);
   border-bottom: 1px solid var(--c-gold-soft);
   background:
-    radial-gradient(ellipse at top, rgba(198,161,91,0.06), transparent 60%),
+    radial-gradient(ellipse at top, rgba(201,149,72,0.06), transparent 60%),
     var(--c-bg);
 }
 
@@ -513,7 +588,7 @@ a { color: inherit; }
   counter-reset: toc-counter;
 }
 
-.toc__item { border-bottom: 1px dotted rgba(198,161,91,0.3); }
+.toc__item { border-bottom: 1px dotted rgba(201,149,72,0.3); }
 
 .toc__link {
   display: flex;
@@ -610,7 +685,7 @@ a { color: inherit; }
   content: "";
   position: absolute;
   inset: 6px;
-  border: 1px solid rgba(198,161,91,0.18);
+  border: 1px solid rgba(201,149,72,0.18);
   pointer-events: none;
 }
 
@@ -635,8 +710,8 @@ a { color: inherit; }
   align-items: center;
   justify-content: center;
   background:
-    repeating-linear-gradient(135deg, rgba(198,161,91,0.05) 0 2px, transparent 2px 14px),
-    linear-gradient(160deg, #1b1a1d, #0B0B0D 70%);
+    repeating-linear-gradient(135deg, rgba(206,141,73,0.05) 0 2px, transparent 2px 14px),
+    linear-gradient(160deg, #1b1a16, #0B0D06 70%);
   cursor: pointer;
   border: none;
   padding: 0;
@@ -666,13 +741,13 @@ a { color: inherit; }
   align-items: center;
   justify-content: center;
   transition: transform 0.25s ease, background 0.25s ease;
-  box-shadow: 0 0 0 6px rgba(198,161,91,0.08);
+  box-shadow: 0 0 0 6px rgba(201,149,72,0.08);
 }
 
 .video-embed__thumb:hover .video-embed__play,
 .video-embed__thumb:focus-visible .video-embed__play {
   transform: scale(1.08);
-  background: rgba(198,161,91,0.18);
+  background: rgba(201,149,72,0.18);
 }
 
 .video-embed__thumb-caption {
@@ -716,13 +791,22 @@ a { color: inherit; }
   letter-spacing: 0.02em;
 }
 
+.team-card__team {
+  font-family: var(--f-caption);
+  font-style: italic;
+  color: var(--c-silver);
+  font-size: 0.82rem;
+  margin: 0 0 14px;
+}
+
 .team-card__genre {
   display: inline-block;
   font-family: var(--f-caption);
   font-style: italic;
   font-size: 0.82rem;
-  color: var(--c-red);
-  border: 1px solid rgba(139,0,0,0.5);
+  letter-spacing: 0.04em;
+  color: var(--c-gold-bright);
+  border: 1px solid var(--c-gold-soft);
   padding: 3px 12px;
   margin-bottom: 16px;
 }
@@ -815,8 +899,8 @@ a { color: inherit; }
   justify-content: center;
   flex-direction: column;
   gap: 6px;
-  background: linear-gradient(160deg, #17161a, #0d0c0f);
-  border-bottom: 1px dashed rgba(198,161,91,0.25);
+  background: linear-gradient(160deg, #1a1812, #0d0b08);
+  border-bottom: 1px dashed rgba(206,141,73,0.25);
   color: var(--c-silver);
   font-family: var(--f-caption);
   font-style: italic;
@@ -894,7 +978,7 @@ a { color: inherit; }
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
-  box-shadow: 0 0 22px 4px rgba(198,161,91,0.16);
+  box-shadow: 0 0 22px 4px rgba(201,149,72,0.16);
 }
 
 .member__portrait-placeholder {
@@ -904,8 +988,8 @@ a { color: inherit; }
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at 50% 38%, rgba(244,233,216,0.14), transparent 60%), linear-gradient(160deg, #201f23, #0B0B0D);
-  box-shadow: 0 0 22px 4px rgba(198,161,91,0.14);
+  background: radial-gradient(circle at 50% 38%, rgba(217,163,103,0.14), transparent 60%), linear-gradient(160deg, #242921, #0B0D06);
+  box-shadow: 0 0 22px 4px rgba(206,141,73,0.14);
   font-family: var(--f-display);
   font-size: 1.6rem;
   color: var(--c-gold);
@@ -1017,8 +1101,18 @@ a { color: inherit; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .hero__scroll-line, .hero__scroll-arrow, .webtoon-prompt__arrow { animation: none; }
+  .hero__frame-diamond { animation: none; opacity: 1; transform: translateX(-50%) scale(1); }
   .hero__content { animation: none; opacity: 1; transform: none; }
-  .hero__gallery { animation: none; opacity: 1; transform: translateX(-50%); }
+  .hero__gallery { opacity: 1; transform: translateX(-50%); }
+  .hero__gallery-frame {
+    transform: translate3d(-50%, -50%, 0) rotate(var(--rot, 0deg)) scale(var(--scale, 1)) !important;
+    opacity: 1 !important;
+  }
+  .hero__gallery-mat img,
+  .hero__gallery-placeholder { filter: none !important; }
+  .hero__spotlight { opacity: 1 !important; animation: none !important; }
+  .hero__ornament-line { transform: scaleX(1) !important; }
+  .hero__ornament-diamond { transform: scale(1) !important; }
   .hero__poster { transform: none; }
   * { transition-duration: 0.001ms !important; }
 }

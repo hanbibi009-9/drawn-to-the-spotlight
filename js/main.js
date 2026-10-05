@@ -40,7 +40,7 @@
     setHeroTitleArc("heroTitle", h.title);
     setText("heroSubtitle", h.subtitle);
     setText("heroPeriod", h.period);
-    setText("heroCredit", h.creditLine);
+    setText("heroVenue", h.venue);
 
     const posterImg = document.querySelector(".hero__poster");
     if (posterImg && h.posterImage) posterImg.src = h.posterImage;
@@ -94,62 +94,130 @@
     });
   }
 
-  /* --- 스포트라이트 빔 안에 쌓이는 액자 갤러리: 팀 썸네일이 있으면 쓰고, 없으면 스케치풍 플레이스홀더 --- */
+  /* --- 스포트라이트 빔 안에 쌓이는 액자 갤러리(11개): 흩어진 시작 위치 → 최종 위치로 "날아와 눌러앉는"
+         바로 그 엘리먼트가 애니메이션이 끝난 뒤에도 그대로 Hero의 실제 UI로 남는다(별도 인트로 없음) --- */
   function renderHeroGallery() {
     const wrap = document.getElementById("heroGallery");
     if (!wrap) return;
 
-    const teams = data.teams.slice().sort((a, b) => a.order - b.order).slice(0, 7);
+    const teams = data.teams.slice().sort((a, b) => a.order - b.order);
     wrap.innerHTML = "";
 
-    teams.forEach((team) => {
+    // 8방향(상/우상/우/우하/하/좌하/좌/좌상)에서 각자 다른 위치로 날아들어옴
+    const directions = [
+      { x: 0, y: -1 },
+      { x: 0.8, y: -0.8 },
+      { x: 1, y: 0 },
+      { x: 0.8, y: 0.8 },
+      { x: 0, y: 1 },
+      { x: -0.8, y: 0.8 },
+      { x: -1, y: 0 },
+      { x: -0.8, y: -0.8 }
+    ];
+    const isMobile = window.matchMedia && window.matchMedia("(max-width: 640px)").matches;
+    const travel = isMobile ? 150 : 380;
+    const n = teams.length;
+
+    teams.forEach((team, i) => {
       const frame = document.createElement("div");
       frame.className = "hero__gallery-frame";
+
+      // 최종 위치: 가운데를 중심으로 살짝 지그재그, 겹침, 크기 변화를 주어
+      // "불규칙하지만 균형 있게 이어진 하나의 조형물"처럼 보이게 함
+      const t = n > 1 ? i / (n - 1) : 0.5;
+      const topPct = 3 + t * 92;
+      const zig = Math.sin(i * 2.4) * 11;
+      const leftPct = 50 + zig;
+      const restRot = Math.sin(i * 1.7) * 4.2;
+      const scale = 0.68 + 0.32 * Math.abs(Math.sin(i * 1.1 + 0.4));
+      const jitter = Math.sin(i * 3.3) * 0.5 + 0.5; // 0~1, 포스터마다 다른 느낌을 주는 지터
+
+      frame.style.top = `${topPct}%`;
+      frame.style.left = `${leftPct}%`;
+      frame.style.setProperty("--z", String(i + 1));
+      frame.style.setProperty("--rot", `${restRot.toFixed(2)}deg`);
+      frame.style.setProperty("--scale", scale.toFixed(2));
+
+      // 시작 상태: 화면 가장자리 방향으로 흩어져 있고 더 많이 돌아가 있음
+      const dir = directions[i % directions.length];
+      frame.style.setProperty("--fx", `${(dir.x * travel * (0.8 + jitter * 0.4)).toFixed(0)}px`);
+      frame.style.setProperty("--fy", `${(dir.y * travel * (0.8 + jitter * 0.4)).toFixed(0)}px`);
+      frame.style.setProperty("--frot", `${(restRot + (i % 2 === 0 ? -1 : 1) * (26 + jitter * 14)).toFixed(1)}deg`);
+      frame.style.setProperty("--delay", `${(jitter * 0.45 + i * 0.045).toFixed(2)}s`);
+      frame.style.setProperty("--dur", `${(1.05 + jitter * 0.35).toFixed(2)}s`);
+
+      const mat = document.createElement("div");
+      mat.className = "hero__gallery-mat";
 
       if (team.thumbnail) {
         const img = document.createElement("img");
         img.src = team.thumbnail;
         img.alt = "";
-        frame.appendChild(img);
+        mat.appendChild(img);
       } else {
         const placeholder = document.createElement("div");
         placeholder.className = "hero__gallery-placeholder";
-        frame.appendChild(placeholder);
+        mat.appendChild(placeholder);
       }
 
+      frame.appendChild(mat);
       wrap.appendChild(frame);
     });
   }
 
-  /* --- 히어로 스크롤 패럴랙스: 포스터는 느리게, 액자 갤러리는 중간, 텍스트는 빠르게 사라지며 깊이감을 줌 --- */
-  function setupHeroParallax() {
+  /* --- Hero 등장 애니메이션: 극장 암전 → 포스터 조립 → 스포트라이트 점등 → 금장식/타이틀 리빌.
+         끝나도 다른 화면으로 전환하지 않고, 같은 Hero DOM이 그대로 완성된 최종 화면이 된다. --- */
+  function setupHeroEntrance() {
+    const hero = document.getElementById("hero");
+    if (!hero) return;
+
+    const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (reduceMotion) {
+      // 중간 연출 없이, 모든 최종 상태를 즉시 적용(짧은 fade는 CSS의 transition-duration 축소로 처리됨)
+      hero.classList.add("hero--posters-in", "hero--spotlight-on", "hero--revealed", "hero--ornament-in");
+      return;
+    }
+
+    const after = (ms, fn) => window.setTimeout(fn, ms);
+
+    after(300, () => hero.classList.add("hero--posters-in"));    // 11개 포스터 조립
+    after(2100, () => hero.classList.add("hero--spotlight-on")); // 스포트라이트 점등
+    after(2400, () => hero.classList.add("hero--revealed"));     // 포스터가 빛을 받아 밝아짐
+    after(2800, () => hero.classList.add("hero--ornament-in"));  // 금장식 등장(타이틀은 CSS 자체 딜레이로 비슷한 시점에 등장)
+  }
+
+  /* --- Hero 인터랙션: 스크롤에는 포스터/텍스트가 깊이감 있게 반응하고,
+         데스크톱에서는 마우스 위치에 아주 살짝만 반응해서 화면이 "살아있는" 느낌을 줌 --- */
+  function setupHeroInteraction() {
     const hero = document.getElementById("hero");
     const poster = hero && hero.querySelector(".hero__poster");
     const content = hero && hero.querySelector(".hero__content");
     const gallery = hero && hero.querySelector(".hero__gallery");
+    const spotlight = hero && hero.querySelector(".hero__spotlight");
+    const stars = hero && hero.querySelector(".hero__stars");
     if (!hero || !poster || !content) return;
 
     const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduceMotion) return;
 
-    // 등장 애니메이션이 끝나면 CSS animation을 내려서,
-    // 이후 스크롤 패럴랙스가 인라인 transform으로 그대로 반영되게 함
+    // 등장 애니메이션(heroContentIn)이 끝나면 CSS animation을 내려서,
+    // 이후 스크롤/마우스 패럴랙스가 인라인 transform으로 그대로 반영되게 함
     content.addEventListener("animationend", () => { content.style.animation = "none"; }, { once: true });
-    if (gallery) {
-      gallery.addEventListener("animationend", () => { gallery.style.animation = "none"; }, { once: true });
-    }
 
-    const POSTER_SPEED = 0.35;    // 포스터가 스크롤보다 느리게 따라오는 비율
-    const GALLERY_SPEED = 0.45;   // 액자 갤러리는 포스터보다 조금 빠르게(텍스트보다는 느리게)
-    const CONTENT_SPEED = 0.55;   // 텍스트가 위로 사라지는 비율(가장 빠르게)
-    const FADE_RANGE = 0.85;      // 히어로 높이의 몇 %를 스크롤해야 다 사라지는지
+    const POSTER_SPEED = 0.35;          // 포스터 배경이 스크롤보다 느리게 따라오는 비율
+    const GALLERY_SCROLL_SPEED = 0.45;  // 액자 갤러리는 배경보다 조금 빠르게(텍스트보다는 느리게)
+    const CONTENT_SPEED = 0.55;         // 텍스트가 위로 사라지는 비율(가장 빠르게)
+    const FADE_RANGE = 0.85;            // 히어로 높이의 몇 %를 스크롤해야 다 사라지는지
 
+    let scrollY = 0;
+    let mouseX = 0; // -1 ~ 1
+    let mouseY = 0; // -1 ~ 1
     let ticking = false;
 
-    function update() {
+    function render() {
       ticking = false;
       const heroHeight = hero.offsetHeight;
-      const scrollY = window.scrollY || window.pageYOffset || 0;
       const progress = Math.min(1, Math.max(0, scrollY / (heroHeight * FADE_RANGE)));
 
       poster.style.transform = `scale(1.15) translateY(${scrollY * POSTER_SPEED}px)`;
@@ -157,45 +225,57 @@
       content.style.opacity = String(1 - progress);
 
       if (gallery) {
-        gallery.style.transform = `translateX(-50%) translateY(${-scrollY * GALLERY_SPEED}px)`;
+        const gx = mouseX * 4;   // 마우스에 의한 아주 작은 오프셋(최대 ~4px)
+        const gy = -scrollY * GALLERY_SCROLL_SPEED + mouseY * 3;
+        gallery.style.transform = `translate(calc(-50% + ${gx.toFixed(1)}px), ${gy.toFixed(1)}px)`;
         gallery.style.opacity = String(1 - progress);
+      }
+
+      if (spotlight) {
+        const sx = mouseX * 12;  // 스포트라이트는 조금 더 크게(최대 ~12px) 반응
+        const sy = scrollY * 0.08 + mouseY * 8;
+        spotlight.style.transform = `translate(calc(-50% + ${sx.toFixed(1)}px), ${sy.toFixed(1)}px)`;
+      }
+
+      if (stars) {
+        stars.style.transform = `translate(${(mouseX * 6).toFixed(1)}px, ${(mouseY * 4).toFixed(1)}px)`;
+      }
+    }
+
+    function requestRender() {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(render);
       }
     }
 
     function onScroll() {
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(update);
-      }
+      scrollY = window.scrollY || window.pageYOffset || 0;
+      requestRender();
     }
 
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll, { passive: true });
-    update();
-  }
+    render();
 
-  /* --- 오프닝 커튼: 양옆으로 간단하게 열리기만 함 --- */
-  function openCurtain() {
-    const left = document.getElementById("curtainLeft");
-    const right = document.getElementById("curtainRight");
-    if (!left || !right) return;
+    // 마우스 패럴랙스는 정밀 포인터(데스크톱)에서만. 모바일/터치에는 적용하지 않음
+    const canHover = window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    if (canHover) {
+      hero.addEventListener("mousemove", (e) => {
+        hero.classList.remove("hero--settling");
+        const rect = hero.getBoundingClientRect();
+        mouseX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+        mouseY = ((e.clientY - rect.top) / rect.height) * 2 - 1;
+        requestRender();
+      });
 
-    // 다 열리고 나면 visibility:hidden 처리 — 화면 가장자리에 살짝 걸쳐 남아있던
-    // 커튼 끝단이 스크롤 중 서브픽셀 반올림으로 깜빡이던 문제를 원천 차단
-    const hideWhenDone = (el) => {
-      el.addEventListener("transitionend", (e) => {
-        if (e.propertyName === "transform") el.classList.add("is-hidden");
-      }, { once: true });
-    };
-    hideWhenDone(left);
-    hideWhenDone(right);
-
-    requestAnimationFrame(() => {
-      window.setTimeout(() => {
-        left.classList.add("is-open");
-        right.classList.add("is-open");
-      }, 500);
-    });
+      hero.addEventListener("mouseleave", () => {
+        hero.classList.add("hero--settling");
+        mouseX = 0;
+        mouseY = 0;
+        requestRender();
+      });
+    }
   }
 
   /* ---------------------------------------------------------
@@ -276,6 +356,7 @@
         <div class="team-card__body">
           <span class="team-card__order">Feature No. ${String(team.order).padStart(2, "0")}</span>
           <h2 class="team-card__title">${escapeHtml(team.title)}</h2>
+          ${team.teamName ? `<p class="team-card__team">팀명 · ${escapeHtml(team.teamName)}</p>` : ""}
           <span class="team-card__genre">${escapeHtml(team.genre)}</span>
           <p class="team-card__synopsis">${escapeHtml(team.synopsis)}</p>
           <span class="team-card__runtime">Running Time — ${escapeHtml(team.runtime)}</span>
@@ -556,7 +637,7 @@
     renderTOC();
     renderTeamCards();
     renderCredits();
-    setupHeroParallax();
-    openCurtain();
+    setupHeroEntrance();
+    setupHeroInteraction();
   });
 })();
