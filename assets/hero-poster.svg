@@ -2,18 +2,18 @@
   <defs>
     <radialGradient id="spotlight" cx="50%" cy="28%" r="65%">
       <stop offset="0%" stop-color="#3a2f16" stop-opacity="0.95"/>
-      <stop offset="35%" stop-color="#1c160b" stop-opacity="0.85"/>
-      <stop offset="100%" stop-color="#0B0B0D" stop-opacity="1"/>
+      <stop offset="35%" stop-color="#241c12" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#15110D" stop-opacity="1"/>
     </radialGradient>
     <linearGradient id="curtainL" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#3d0707"/>
-      <stop offset="55%" stop-color="#650b0b"/>
-      <stop offset="100%" stop-color="#8B0000"/>
+      <stop offset="0%" stop-color="#0c0a08"/>
+      <stop offset="55%" stop-color="#171310"/>
+      <stop offset="100%" stop-color="#241d15"/>
     </linearGradient>
     <linearGradient id="curtainR" x1="100%" y1="0%" x2="0%" y2="0%">
-      <stop offset="0%" stop-color="#3d0707"/>
-      <stop offset="55%" stop-color="#650b0b"/>
-      <stop offset="100%" stop-color="#8B0000"/>
+      <stop offset="0%" stop-color="#0c0a08"/>
+      <stop offset="55%" stop-color="#171310"/>
+      <stop offset="100%" stop-color="#241d15"/>
     </linearGradient>
     <linearGradient id="goldLine" x1="0%" y1="0%" x2="100%" y2="0%">
       <stop offset="0%" stop-color="#C6A15B" stop-opacity="0.15"/>
@@ -26,12 +26,12 @@
       <stop offset="100%" stop-color="#C6A15B" stop-opacity="0"/>
     </radialGradient>
     <linearGradient id="floor" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#0B0B0D" stop-opacity="0"/>
+      <stop offset="0%" stop-color="#15110D" stop-opacity="0"/>
       <stop offset="100%" stop-color="#000000" stop-opacity="0.9"/>
     </linearGradient>
   </defs>
 
-  <rect x="0" y="0" width="1600" height="2400" fill="#0B0B0D"/>
+  <rect x="0" y="0" width="1600" height="2400" fill="#15110D"/>
   <rect x="0" y="0" width="1600" height="2400" fill="url(#spotlight)"/>
 
   <!-- spotlight cone -->
@@ -111,8 +111,4 @@
 
   <!-- floor -->
   <rect x="0" y="1700" width="1600" height="700" fill="url(#floor)"/>
-
-  <!-- decorative gold frame lines top/bottom -->
-  <rect x="60" y="60" width="1480" height="2280" fill="none" stroke="#C6A15B" stroke-width="2" opacity="0.35"/>
-  <rect x="80" y="80" width="1440" height="2240" fill="none" stroke="#C6A15B" stroke-width="1" opacity="0.2"/>
 </svg>

@@ -17,11 +17,9 @@
 <!-- ===== 3.1 오프닝 히어로 ===== -->
 <header class="hero" id="hero">
   <img class="hero__poster" src="assets/hero-poster.svg" alt="올드 할리우드 극장 무대 위 스포트라이트와 마퀴 조명이 드리운 상영회 홍보 포스터">
+  <div class="hero__stars" aria-hidden="true"></div>
   <div class="hero__scrim" aria-hidden="true"></div>
-  <div class="hero__cast" aria-hidden="true">
-    <img class="hero__cast-figure hero__cast-figure--man" src="assets/characters/man.svg" alt="" onerror="this.style.display='none'">
-    <img class="hero__cast-figure hero__cast-figure--girl" src="assets/characters/girl.svg" alt="" onerror="this.style.display='none'">
-  </div>
+  <div class="hero__gallery" id="heroGallery" aria-hidden="true"><!-- JS 렌더: 스포트라이트 빔 속 액자 갤러리 --></div>
   <div class="hero__content">
     <div class="hero__text-scrim" aria-hidden="true"></div>
     <p class="hero__edition" id="heroEdition"></p>
@@ -32,6 +30,15 @@
   </div>
   <div class="hero__curtain hero__curtain--left" id="curtainLeft" aria-hidden="true"></div>
   <div class="hero__curtain hero__curtain--right" id="curtainRight" aria-hidden="true"></div>
+  <div class="hero__frame" aria-hidden="true">
+    <span class="hero__frame-corner hero__frame-corner--tl"></span>
+    <span class="hero__frame-corner hero__frame-corner--tr"></span>
+    <span class="hero__frame-corner hero__frame-corner--bl"></span>
+    <span class="hero__frame-corner hero__frame-corner--br"></span>
+    <span class="hero__frame-diamond">
+      <span class="hero__frame-diamond-inner"></span>
+    </span>
+  </div>
   <a class="hero__scroll" href="#toc" aria-label="상영 프로그램 목차로 스크롤">
     <span class="hero__scroll-line" aria-hidden="true"></span>
     <span class="hero__scroll-arrow" aria-hidden="true">▾</span>
